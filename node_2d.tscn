@@ -1,9 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1idmbpol5v3t"]
+[gd_scene load_steps=16 format=3 uid="uid://b1idmbpol5v3t"]
 
 [ext_resource type="Script" uid="uid://fhvfpf7x7usu" path="res://node_2d.gd" id="1_q6r6c"]
 [ext_resource type="Texture2D" uid="uid://3tj51sluxss4" path="res://font/zzooee.png" id="4_kdubu"]
 [ext_resource type="Texture2D" uid="uid://ch30kxgpk0yr7" path="res://font/zzooee2.png" id="5_d21ai"]
+[ext_resource type="Texture2D" uid="uid://cadus443c73lg" path="res://font/armmove0.png" id="5_rj586"]
+[ext_resource type="Texture2D" uid="uid://casdwbt5mtfry" path="res://font/armmove.png" id="6_4d7sh"]
 [ext_resource type="Texture2D" uid="uid://b6kec5ecoqh4s" path="res://font/zzooee1.png" id="6_rj586"]
+[ext_resource type="Texture2D" uid="uid://cq3iykbq3y0cn" path="res://font/swimzoe1.png" id="7_ir8iy"]
+[ext_resource type="Script" uid="uid://173usv4bufpk" path="res://animated_sprite_2d.gd" id="8_4d7sh"]
+[ext_resource type="PackedScene" uid="uid://b0gisag12iyjn" path="res://control.tscn" id="9_4d7sh"]
+[ext_resource type="AudioStream" uid="uid://c1kmma4ekvvss" path="res://music/英雄联盟 - 暮光星灵佐伊 (Inst_).ogg" id="10_ir8iy"]
+[ext_resource type="Script" uid="uid://dls7o2b7bd38" path="res://sprite_2d.gd" id="12_x0ka3"]
+[ext_resource type="Texture2D" uid="uid://chpdd3qbxjgj0" path="res://mask.png" id="13_0h7mo"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4d7sh"]
 animations = [{
@@ -19,18 +27,30 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_kdubu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_rj586")
+}, {
 "duration": 1.0,
 "texture": ExtResource("5_d21ai")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_kdubu")
+"texture": ExtResource("6_rj586")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_rj586")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4d7sh")
 }],
 "loop": true,
 "name": &"movee",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -38,6 +58,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"stand",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ir8iy")
+}],
+"loop": true,
+"name": &"swim-default",
 "speed": 5.0
 }]
 
@@ -55,23 +83,71 @@ func _process(delta: float) -> void:
 	pass
 "
 
+[sub_resource type="GDScript" id="GDScript_ir8iy"]
+script/source = "extends AudioStreamPlayer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
 [node name="Node2D" type="Node2D"]
-position = Vector2(108, 82)
+position = Vector2(85, 93)
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_q6r6c")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-6.10352e-05, -3.05176e-05)
-scale = Vector2(0.5, 0.5)
+z_index = -1
+position = Vector2(-255, -160)
+scale = Vector2(1, 0.994)
 sprite_frames = SubResource("SpriteFrames_4d7sh")
+frame_progress = 0.661242
+script = ExtResource("8_4d7sh")
 
 [node name="Camera2D" type="Camera2D" parent="AnimatedSprite2D"]
 position = Vector2(0.000152588, 7.62939e-05)
+scale = Vector2(1, 0.963145)
 zoom = Vector2(4, 4)
 script = SubResource("GDScript_0hol4")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 15.0
 autostart = true
 
+[node name="Control" parent="." instance=ExtResource("9_4d7sh")]
+z_index = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -375.0
+offset_top = -315.0
+offset_right = -375.0
+offset_bottom = -315.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control"]
+stream = ExtResource("10_ir8iy")
+script = SubResource("GDScript_ir8iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-250, -100)
+script = ExtResource("12_x0ka3")
+
+[node name="mask" type="Sprite2D" parent="."]
+position = Vector2(-369, -311)
+scale = Vector2(0.213065, 0.228913)
+texture = ExtResource("13_0h7mo")
+
+[connection signal="cejianone" from="." to="AnimatedSprite2D" method="_on_cejianone"]
+[connection signal="default" from="." to="AnimatedSprite2D" method="_on_node_2d_default"]
+[connection signal="movee" from="." to="AnimatedSprite2D" method="_on_node_2d_default"]
+[connection signal="stand" from="." to="AnimatedSprite2D" method="_on_node_2d_default"]
+[connection signal="followmousemove" from="AnimatedSprite2D" to="." method="followmouse"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

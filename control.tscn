@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0gisag12iyjn"]
+
+[ext_resource type="Script" uid="uid://dqg8uwsx4o8r7" path="res://control.gd" id="1_0fbet"]
+
+[sub_resource type="GDScript" id="GDScript_62e2m"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = -66.0
+offset_bottom = -94.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.49038, 1.57254)
+script = ExtResource("1_0fbet")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 112.052
+offset_top = 155.799
+offset_right = 143.052
+offset_bottom = 190.799
+scale = Vector2(1.5736, 1.20184)
+
+[node name="hideortop" type="Button" parent="VBoxContainer"]
+self_modulate = Color(0.983844, 0.0925348, 0.117635, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 1
+script = SubResource("GDScript_62e2m")
+
+[node name="yifu" type="Button" parent="VBoxContainer"]
+self_modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+
+[node name="music" type="Button" parent="VBoxContainer"]
+self_modulate = Color(0, 0, 1, 1)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.708919, 2.94958)
+
+[connection signal="toggled" from="VBoxContainer/hideortop" to="." method="_on_hideortop_toggled"]
+[connection signal="toggled" from="VBoxContainer/yifu" to="." method="_on_yifu_toggled"]
+[connection signal="pressed" from="VBoxContainer/music" to="." method="_on_music_pressed"]
